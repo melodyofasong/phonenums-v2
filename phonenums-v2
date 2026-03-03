@@ -1,0 +1,79 @@
+# tkinter imports
+from tkinter import *
+from tkinter import messagebox
+from tkinter import filedialog
+# phonenums imports
+import phonenumbers
+from phonenumbers import PhoneNumberMatcher
+import csv
+
+class extracter:
+
+    def __init__(self):
+        self.root = Tk()
+        self.root.geometry("800x300")
+        self.root.title("Extract phone numbers")
+        self.root.config(background="#f58787")
+
+        self.heading = Label(self.root,
+            text="Extract Phone numbers",
+            font=('Helvetica', 20, "bold"),
+            fg="#080404",
+            bg="#804141")
+        self.heading.pack(padx=10, pady=10, fill='x')
+
+        self.infoLabel = Label(self.root,
+            text="The below button lets you select the OCR .txt file you wish to extract phone numbers from.",
+            font=('Helvetica', 13),
+            fg="#080404",
+            bg="#804141")
+        self.infoLabel.pack(padx=10, pady=10, fill='x')
+
+        self.infoLabeltwo = Label(self.root,
+            text="The .csv file will be generated once the button is pressed.",
+            font=('Helvetica', 13),
+            fg="#080404",
+            bg="#804141")
+        self.infoLabeltwo.pack(padx=10, pady=10, fill='x')
+
+        self.button = Button(self.root,
+            text="Try Clicking Me!",
+            font=('Helvetica', 15),
+            fg="#080404",
+            bg="#804141",
+            command=self.openFile_phonenums)
+        self.button.pack(padx=10, pady=10)
+
+        self.root.protocol("WM_DELETE_WINDOW", self.onclosing)
+        self.root.mainloop()
+
+    def onclosing(self):
+        if messagebox.askyesno(title="Quit?", message="Do u fr wanna leave me twin?"):
+            self.root.destroy()
+
+    def openFile_phonenums(self):
+        filepath = filedialog.askopenfilename(initialdir="C:\\Your\\Path\\Here")
+        filecontent = open(filepath, 'r')
+        filecontent.close()
+
+        with open(filepath, 'r', encoding='utf-8') as f:
+            epaper_text = f.read()
+
+        matcher = PhoneNumberMatcher(epaper_text, "IN")
+        phones = []
+
+        for match in matcher:
+            original_num = phonenumbers.format_number(match.number, phonenumbers.PhoneNumberFormat.NATIONAL)
+            phones.append(original_num)
+
+        phones = list(set(phones))
+
+        with open('epaper_phones.csv', 'w', newline='', encoding='utf-8') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(['Phone Number'])
+            writer.writerows([[phone] for phone in phones])
+
+        if messagebox.showinfo(title="Extracted phones", message=f"Saved {len(phones)} unique phone numbers to epaper_phones.csv"):
+            self.root.destroy()
+
+extracter()
