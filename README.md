@@ -1,4 +1,4 @@
-# phonenums-v2
+phonenums-v2
 
 # Extract Phone Numbers from text v2
 I had a lot of fun making this because this is my first ever GUI project in python. The first one is always close to your heart. This script plucks Indian phone numbers out of messy text files, like OCR outputs or e-paper dumps and neatly tucks them into a CSV.
@@ -21,6 +21,8 @@ You’ll need Python 3 installed. You also need the phonenumbers library:
 - Click the "Try Clicking Me!" button.
 - Select your .txt file from the file explorer.
 - Once the "Extracted phones" message pops up, check your folder for epaper_phones.csv.
+
+![phonenums v2 gif](https://github.com/user-attachments/assets/ed6bc564-0427-464e-800b-1504ad8f694e)
 
 ## Built With
 - Standard Python Tkinter Library: For the window, file dialog & messagebox features for the GUI.
